@@ -16,16 +16,30 @@
         Title="MainWindow" Height="350" Width="525">
     <controls:MetroWindow.Resources>
         <RoutedUICommand x:Key="OpenFileCommand" Text="OpenFile" />
+        <RoutedUICommand x:Key="PasteCommand" Text="Paste" />
         
         <ContextMenu x:Key="RightclickMenu">
             <MenuItem Header="OpenFile" Command="{StaticResource OpenFileCommand}"></MenuItem>
+            <MenuItem Header="Paste" Command="{StaticResource PasteCommand}"></MenuItem>
         </ContextMenu>
     </controls:MetroWindow.Resources>
     
     <controls:MetroWindow.CommandBindings>
-        <CommandBinding Command="{StaticResource OpenFileCommand}" Executed="OpenBydialog"></CommandBinding>
+        <CommandBinding Command="{StaticResource OpenFileCommand}" Executed="OpenByDialog"></CommandBinding>
+        <CommandBinding Command="{StaticResource PasteCommand}" Executed="PasteImage"></CommandBinding>
     </controls:MetroWindow.CommandBindings>
-    
+
+    <!--Titlebar Buttons-->
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button x:Name="ButtonPaste" Content="ClipBoard(Ctrl+V)" Command="{StaticResource PasteCommand}" />
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+
+    <controls:MetroWindow.InputBindings>
+        <KeyBinding Key="V" Modifiers="Ctrl" Command="{StaticResource PasteCommand}" />
+    </controls:MetroWindow.InputBindings>
+
     <Grid Background="#252525">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

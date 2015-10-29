@@ -30,7 +30,7 @@ namespace ImgUpl0ad.UserInterface
             return true;
         }
 
-#region "destractor"
+        #region "destractor"
         private bool _disposed = false;
         
         public void Dispose()
@@ -55,7 +55,36 @@ namespace ImgUpl0ad.UserInterface
             _disposed = true;
         }
 #endregion
+    }
 
+    public class BitmapSourceToBitmapImageConverter
+    {
+        public BitmapImage Convert(BitmapSource bitmap)
+        {
+            var encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(bitmap));
+
+            var memoryStream = new MemoryStream();
+            encoder.Save(memoryStream);
+
+            var bitmapImage = new BitmapImage();
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapImage.CreateOptions = BitmapCreateOptions.None;
+
+            try
+            {
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = new MemoryStream(memoryStream.ToArray());
+            }
+            finally
+            {
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+                memoryStream.Close();
+            }
+
+            return bitmapImage;
+        }
     }
 
     public class ImageBuff
@@ -64,6 +93,10 @@ namespace ImgUpl0ad.UserInterface
         {
             ImageSouce = imageSouce;
             Detail = detail;
+        }
+
+        public ImageBuff()
+        {
         }
 
         public BitmapImage ImageSouce { get; set; }

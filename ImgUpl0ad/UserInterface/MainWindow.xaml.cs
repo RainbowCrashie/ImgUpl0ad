@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls;
 
 namespace ImgUpl0ad.UserInterface
@@ -27,7 +30,7 @@ namespace ImgUpl0ad.UserInterface
             }
         }
 
-        private void OpenBydialog(object sender, ExecutedRoutedEventArgs e)
+        private void OpenByDialog(object sender, ExecutedRoutedEventArgs e)
         {
             var opener = new ImageIo();
             using (opener)
@@ -38,6 +41,16 @@ namespace ImgUpl0ad.UserInterface
                 SelectedImage = opener.SelectedImage;
                 MainImage.Source = SelectedImage.ImageSouce;
             }
+        }
+
+        private void PasteImage(object sernder, ExecutedRoutedEventArgs e)
+        {
+            if (!(Clipboard.ContainsImage()))
+                return;
+
+            var converter = new BitmapSourceToBitmapImageConverter();
+            SelectedImage = new ImageBuff(converter.Convert(Clipboard.GetImage()), "Clipboard");
+            MainImage.Source = SelectedImage.ImageSouce;
         }
     }
 }
