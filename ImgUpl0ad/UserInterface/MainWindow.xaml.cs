@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MahApps.Metro.Controls;
+using Microsoft.Win32;
 
 namespace ImgUpl0ad.UserInterface
 {
@@ -33,15 +34,14 @@ namespace ImgUpl0ad.UserInterface
 
         private void OpenByDialog(object sender, ExecutedRoutedEventArgs e)
         {
-            var opener = new ImageIo();
-            using (opener)
-            {
-                if (opener.OpenFileWithDialog() == false)
-                    return;
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "*.jpg;*.png;*.gif;*.bmp;|*.jpg;*.png;*.gif;*.bmp;";
+            openFileDialog.Multiselect = false;
 
-                SelectedImage = opener.SelectedImage;
-                MainImage.Source = SelectedImage.ImageSouce;
-            }
+            if (openFileDialog.ShowDialog() == false)
+                return;
+
+            SelectedImage = new ImageBuff(new BitmapImage(new Uri(openFileDialog.FileName)), openFileDialog.FileName);
         }
 
         private void PasteImage(object sernder, ExecutedRoutedEventArgs e)
@@ -53,7 +53,6 @@ namespace ImgUpl0ad.UserInterface
             SelectedImage = new ImageBuff(converter.Convert(Clipboard.GetImage()), "Clipboard");
             MainImage.Source = SelectedImage.ImageSouce;
         }
-
 
         private void MainWindow_OnPreviewDragOver(object sender, DragEventArgs e)
         {
@@ -67,15 +66,13 @@ namespace ImgUpl0ad.UserInterface
         }
         private void MainWindow_OnDragDrop(object sender, DragEventArgs e)
         {
-            var dropChecker = new ImageIo();
-            using (dropChecker)
-            {
-                if (!dropChecker.CheckDrop(e))
-                    return;
+            var dropChecker = new DragDropChecker();
+            var imgbuff = dropChecker.CheckDrop(e);
+            if (imgbuff == null)
+                return;
 
-                SelectedImage = dropChecker.SelectedImage;
-                MainImage.Source = SelectedImage.ImageSouce;
-            }
+            SelectedImage = imgbuff;
+            MainImage.Source = SelectedImage.ImageSouce;
         }
 
         private void StretchWhenLarge()
