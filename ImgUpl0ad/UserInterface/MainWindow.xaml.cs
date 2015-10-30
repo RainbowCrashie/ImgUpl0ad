@@ -46,12 +46,36 @@ namespace ImgUpl0ad.UserInterface
 
         private void PasteImage(object sernder, ExecutedRoutedEventArgs e)
         {
-            if (!(Clipboard.ContainsImage()))
+            if (!Clipboard.ContainsImage())
                 return;
 
             var converter = new BitmapSourceToBitmapImageConverter();
             SelectedImage = new ImageBuff(converter.Convert(Clipboard.GetImage()), "Clipboard");
             MainImage.Source = SelectedImage.ImageSouce;
+        }
+
+
+        private void MainWindow_OnPreviewDragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop, true))
+                e.Effects = System.Windows.DragDropEffects.Copy;
+            else if (e.Data.GetDataPresent(System.Windows.DataFormats.StringFormat, true))
+                e.Effects = System.Windows.DragDropEffects.Copy;
+            else
+                e.Effects = System.Windows.DragDropEffects.None;
+            e.Handled = true;
+        }
+        private void MainWindow_OnDragDrop(object sender, DragEventArgs e)
+        {
+            var dropChecker = new ImageIo();
+            using (dropChecker)
+            {
+                if (!dropChecker.CheckDrop(e))
+                    return;
+
+                SelectedImage = dropChecker.SelectedImage;
+                MainImage.Source = SelectedImage.ImageSouce;
+            }
         }
 
         private void StretchWhenLarge()

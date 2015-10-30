@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 
@@ -28,6 +29,39 @@ namespace ImgUpl0ad.UserInterface
 
             SelectedImage = new ImageBuff(new BitmapImage(new Uri(openFileDialog.FileName)), openFileDialog.FileName);
             return true;
+        }
+
+        public bool CheckDrop(DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
+            {
+                string[] bunchOfFiles = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                if (bunchOfFiles.Length > 1)
+                    return false; //No Multiple Files!!!!
+
+                if (!CheckExtentionCompatible(bunchOfFiles[0]))
+                    return false;
+
+                SelectedImage = new ImageBuff(new BitmapImage(new Uri(bunchOfFiles[0])), bunchOfFiles[0]);
+                return true;
+            }
+            if (e.Data.GetDataPresent(DataFormats.StringFormat, true)) //for dragdops from web browsers
+            {
+                var someString = (string)e.Data.GetData(DataFormats.StringFormat);
+
+                if (!System.Text.RegularExpressions.Regex.IsMatch(someString,
+                      @"https?://[\w/:%#\$&\?\(\)~\.=\+\-]+",
+                      System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                    return false; //Is it a URL?
+
+                if (!CheckExtentionCompatible(someString))
+                    return false;
+
+                SelectedImage = new ImageBuff(new BitmapImage(new Uri(someString)), someString);
+                return true;
+            }
+
+            return false;
         }
 
         #region "destractor"

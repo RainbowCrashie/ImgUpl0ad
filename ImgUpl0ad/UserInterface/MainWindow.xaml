@@ -6,6 +6,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:ImgUpl0ad"
         mc:Ignorable="d"
+        AllowDrop="True"
                       
         FocusManager.FocusedElement="{Binding RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}"
                       
@@ -15,7 +16,9 @@
                       
         Title="MainWindow" Height="350" Width="525"
                       
-                      SizeChanged="MainWindow_OnSizeChanged">
+                      SizeChanged="MainWindow_OnSizeChanged"
+                      PreviewDragOver="MainWindow_OnPreviewDragOver"
+                      Drop="MainWindow_OnDragDrop">
     <controls:MetroWindow.Resources>
         <RoutedUICommand x:Key="OpenFileCommand" Text="OpenFile" />
         <RoutedUICommand x:Key="PasteCommand" Text="Paste" />
