@@ -26,6 +26,7 @@ namespace ImgUpl0ad.UserInterface
             {
                 if (_selectedimage == value) return;
                 ButtonUpload.IsEnabled = value != null;
+                StretchWhenLarge();
                 _selectedimage = value;
             }
         }
@@ -51,6 +52,26 @@ namespace ImgUpl0ad.UserInterface
             var converter = new BitmapSourceToBitmapImageConverter();
             SelectedImage = new ImageBuff(converter.Convert(Clipboard.GetImage()), "Clipboard");
             MainImage.Source = SelectedImage.ImageSouce;
+        }
+
+        private void StretchWhenLarge()
+        {
+            if (SelectedImage == null)
+                return;
+            if (MainImage.ActualWidth < SelectedImage.ImageSouce.PixelWidth ||
+                MainImage.ActualHeight < SelectedImage.ImageSouce.PixelHeight)
+            {
+                MainImage.Stretch = Stretch.Uniform;
+            }
+            else
+            {
+                MainImage.Stretch = Stretch.None;
+            }
+        }
+
+        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            StretchWhenLarge();
         }
     }
 }
