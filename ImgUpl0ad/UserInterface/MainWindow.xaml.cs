@@ -57,12 +57,12 @@ namespace ImgUpl0ad.UserInterface
 
         private void MainWindow_OnPreviewDragOver(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop, true))
-                e.Effects = System.Windows.DragDropEffects.Copy;
-            else if (e.Data.GetDataPresent(System.Windows.DataFormats.StringFormat, true))
-                e.Effects = System.Windows.DragDropEffects.Copy;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
+                e.Effects = DragDropEffects.Copy;
+            else if (e.Data.GetDataPresent(DataFormats.StringFormat, true))
+                e.Effects = DragDropEffects.Copy;
             else
-                e.Effects = System.Windows.DragDropEffects.None;
+                e.Effects = DragDropEffects.None;
             e.Handled = true;
         }
         private void MainWindow_OnDragDrop(object sender, DragEventArgs e)
