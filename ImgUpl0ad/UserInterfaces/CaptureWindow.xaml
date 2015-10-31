@@ -15,7 +15,8 @@
         Background="Transparent"
         
         Topmost="True"
-        ShowInTaskbar="False">
+        ShowInTaskbar="False"
+        LocationChanged="CaptureWindow_OnLocationChanged">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -27,7 +28,7 @@
             <Label x:Name="LabelLocSize" Content="(200,200) (200,200)" HorizontalAlignment="Right" Margin="0,2,120,0" VerticalAlignment="Bottom"/>
 
         </Grid>
-        <Grid x:Name="GridCaptureArea" />
+        <Grid x:Name="GridCaptureArea" SizeChanged="GridCaptureArea_OnSizeChanged" />
 
     </Grid>
 </Window>

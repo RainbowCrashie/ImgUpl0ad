@@ -116,7 +116,37 @@ namespace ImgUpl0ad.UserInterfaces
 
         private void ButtonCapture_OnClick(object sender, RoutedEventArgs e)
         {
+
         }
-        
+
+        private void GridCaptureArea_OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ShowSizeLocation();
+        }
+
+        private void CaptureWindow_OnLocationChanged(object sender, EventArgs e)
+        {
+            ShowSizeLocation();
+        }
+
+        private Point GetThisLocation()
+        {
+            Point location = GridCaptureArea.PointToScreen(new Point(0.0d, 0.0d));
+            return location;
+        }
+
+        private Point GetThisSize()
+        {
+            Point size = new Point(GridCaptureArea.ActualWidth, GridCaptureArea.ActualHeight);
+            return size;
+        }
+
+        private void ShowSizeLocation()
+        {
+            Point pt = GetThisLocation();
+            Point sz = GetThisSize();
+
+            LabelLocSize.Content = ($"({pt.X},{pt.Y})({sz.X},{sz.Y})");
+        }
     }
 }
