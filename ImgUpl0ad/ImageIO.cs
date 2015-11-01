@@ -54,7 +54,6 @@ namespace ImgUpl0ad
     {
         public BitmapImage Convert(BitmapSource bitmap)
         {
-            //BitmapEncoder encoder = null;
             var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
 
@@ -102,6 +101,22 @@ namespace ImgUpl0ad
                     var converter = new BitmapSourceToBitmapImageConverter();
                     return new ImageBuff(converter.Convert(source), "Capture");
                 }
+            }
+        }
+    }
+
+    public class BitmapImageToByteArrayConverter
+    {
+        public byte[] Convert(BitmapImage source)
+        {
+            BitmapEncoder encoder = null;
+
+            encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(source));
+            using (var ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                return ms.ToArray();
             }
         }
     }
