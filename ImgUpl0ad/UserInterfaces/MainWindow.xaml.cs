@@ -108,6 +108,14 @@ namespace ImgUpl0ad.UserInterface
             }
         }
 
+
+        private void ButtonUpload_OnClick(object sender, RoutedEventArgs e)
+        {
+            var uploadWindow = new UploadResultWindow(SelectedImage);
+            uploadWindow.Owner = this;
+            uploadWindow.ShowDialog();
+        }
+
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
             StretchWhenLarge();
