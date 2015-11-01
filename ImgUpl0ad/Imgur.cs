@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -13,7 +14,7 @@ namespace ImgUpl0ad
     public class Imgur : IDisposable
     {
         private HttpClient _client;
-        private string ClientID { get; } = "";
+        private string ClientID { get; } = "d404730f4975f11";
 
         public Imgur()
         {
@@ -27,10 +28,10 @@ namespace ImgUpl0ad
             _client.DefaultRequestHeaders.Add("Authorization", $"Client-ID {ClientID}");
         }
 
-        public async Task<string> UploadAsync(BitmapImage imageSource)
+        public async Task<string> UploadAsync(BitmapImage image)
         {
             var converter = new BitmapImageToByteArrayConverter();
-            var content = new ByteArrayContent(converter.Convert(imageSource));
+            var content = new ByteArrayContent(converter.Convert(image));
 
             var response = await _client.PostAsync("image", content);
             response.EnsureSuccessStatusCode();
@@ -41,7 +42,23 @@ namespace ImgUpl0ad
 
             return link;
         }
-        
+
+        private class BitmapImageToByteArrayConverter
+        {
+            public byte[] Convert(BitmapImage source)
+            {
+                BitmapEncoder encoder = null;
+
+                encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(source));
+                using (var ms = new MemoryStream())
+                {
+                    encoder.Save(ms);
+                    return ms.ToArray();
+                }
+            }
+        }
+
         public void Dispose()
         {
             _client.Dispose();

@@ -105,22 +105,6 @@ namespace ImgUpl0ad
         }
     }
 
-    public class BitmapImageToByteArrayConverter
-    {
-        public byte[] Convert(BitmapImage source)
-        {
-            BitmapEncoder encoder = null;
-
-            encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(source));
-            using (var ms = new MemoryStream())
-            {
-                encoder.Save(ms);
-                return ms.ToArray();
-            }
-        }
-    }
-
     public class ImageBuff
     {
         public ImageBuff(BitmapImage imageSouce, string detail)
@@ -135,5 +119,6 @@ namespace ImgUpl0ad
 
         public BitmapImage ImageSouce { get; set; }
         public string Detail { get; set; }
+
     }
 }
