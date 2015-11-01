@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using ImgUpl0ad.UserInterfaces;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 
@@ -52,6 +53,23 @@ namespace ImgUpl0ad.UserInterface
             var converter = new BitmapSourceToBitmapImageConverter();
             SelectedImage = new ImageBuff(converter.Convert(Clipboard.GetImage()), "Clipboard");
             MainImage.Source = SelectedImage.ImageSouce;
+        }
+
+        private void Screencap(object sernder, ExecutedRoutedEventArgs e)
+        {
+            this.Hide();
+
+            var captureWindow = new CaptureWindow();
+            if (captureWindow.ShowDialog() == false)
+            {
+                this.Show();
+                return;
+            }
+
+            SelectedImage = captureWindow.CapturedImage;
+            MainImage.Source = SelectedImage.ImageSouce;
+
+            this.Show();
         }
 
         private void MainWindow_OnPreviewDragOver(object sender, DragEventArgs e)

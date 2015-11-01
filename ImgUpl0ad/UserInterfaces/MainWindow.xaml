@@ -22,21 +22,25 @@
     <controls:MetroWindow.Resources>
         <RoutedUICommand x:Key="OpenFileCommand" Text="OpenFile" />
         <RoutedUICommand x:Key="PasteCommand" Text="Paste" />
+        <RoutedUICommand x:Key="ScreencapCommand" Text="Capture" />
         
         <ContextMenu x:Key="RightclickMenu">
             <MenuItem Header="OpenFile" Command="{StaticResource OpenFileCommand}"></MenuItem>
             <MenuItem Header="Paste" Command="{StaticResource PasteCommand}"></MenuItem>
+            
         </ContextMenu>
     </controls:MetroWindow.Resources>
     
     <controls:MetroWindow.CommandBindings>
         <CommandBinding Command="{StaticResource OpenFileCommand}" Executed="OpenByDialog"></CommandBinding>
         <CommandBinding Command="{StaticResource PasteCommand}" Executed="PasteImage"></CommandBinding>
+        <CommandBinding Command="{StaticResource ScreencapCommand}" Executed="Screencap"></CommandBinding>
     </controls:MetroWindow.CommandBindings>
 
     <!--Titlebar Buttons-->
     <controls:MetroWindow.RightWindowCommands>
         <controls:WindowCommands>
+            <Button x:Name="ButtonScreencap" Content="Screencap" Command="{StaticResource ScreencapCommand}" />
             <Button x:Name="ButtonPaste" Content="ClipBoard(Ctrl+V)" Command="{StaticResource PasteCommand}" />
         </controls:WindowCommands>
     </controls:MetroWindow.RightWindowCommands>

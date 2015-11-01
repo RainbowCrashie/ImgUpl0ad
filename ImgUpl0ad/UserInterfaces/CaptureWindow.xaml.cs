@@ -114,9 +114,20 @@ namespace ImgUpl0ad.UserInterfaces
         }
         #endregion
 
+        public ImageBuff CapturedImage { get; set; }
+
         private void ButtonCapture_OnClick(object sender, RoutedEventArgs e)
         {
+            this.Opacity = 0;
 
+            var location = GetThisLocation();
+            var size = GetThisSize();
+            
+            var capture = new Screencap();
+            CapturedImage = capture.Capture(location, size);
+
+            this.Opacity = 1;
+            this.DialogResult = true;
         }
 
         private void GridCaptureArea_OnSizeChanged(object sender, SizeChangedEventArgs e)

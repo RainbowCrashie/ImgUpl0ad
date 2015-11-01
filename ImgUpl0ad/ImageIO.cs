@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace ImgUpl0ad
@@ -51,7 +54,8 @@ namespace ImgUpl0ad
     {
         public BitmapImage Convert(BitmapSource bitmap)
         {
-            var encoder = new JpegBitmapEncoder();
+            //BitmapEncoder encoder = null;
+            var encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bitmap));
 
             var memoryStream = new MemoryStream();
@@ -74,6 +78,31 @@ namespace ImgUpl0ad
             }
 
             return bitmapImage;
+        }
+    }
+
+    public class Screencap
+    {
+        public ImageBuff Capture(System.Windows.Point location, System.Windows.Point size)
+        {
+            using (var area = new Bitmap(
+                (int)size.X,
+                (int)size.Y,
+                PixelFormat.Format32bppArgb))
+            {
+                using (var bmpGraphics = Graphics.FromImage(area))
+                {
+                    bmpGraphics.CopyFromScreen((int)location.X, (int)location.Y, 0, 0, area.Size, CopyPixelOperation.SourceCopy);
+                    var source = Imaging.CreateBitmapSourceFromHBitmap(
+                                 area.GetHbitmap(),
+                                 IntPtr.Zero,
+                                 Int32Rect.Empty,
+                                 BitmapSizeOptions.FromEmptyOptions());
+
+                    var converter = new BitmapSourceToBitmapImageConverter();
+                    return new ImageBuff(converter.Convert(source), "Capture");
+                }
+            }
         }
     }
 
