@@ -18,54 +18,54 @@ namespace ImgUpl0ad.UserInterfaces
         #region ReSiZe
         #region "Constants"
             private const int WmNchittest = 0x0084;
-            HwndSource HwnDSource;
+            HwndSource _hwnDSource;
             // WmNchittest and MOUSEHOOKSTRUCT Mouse Position Codes
-            public const int HTERROR = (-2);
-            public const int HTTRANSPARENT = (-1);
-            public const int HTNOWHERE = 0;
-            public const int HTCLIENT = 1;
-            public const int HTCAPTION = 2;
-            public const int HTSYSMENU = 3;
-            public const int HTGROWBOX = 4;
-            public const int HTSIZE = HTGROWBOX;
-            public const int HTMENU = 5;
-            public const int HTHSCROLL = 6;
-            public const int HTVSCROLL = 7;
-            public const int HTMINBUTTON = 8;
-            public const int HTMAXBUTTON = 9;
-            public const int HTLEFT = 10;
-            public const int HTRIGHT = 11;
-            public const int HTTOP = 12;
-            public const int HTTOPLEFT = 13;
-            public const int HTTOPRIGHT = 14;
-            public const int HTBOTTOM = 15;
-            public const int HTBOTTOMLEFT = 16;
-            public const int HTBOTTOMRIGHT = 17;
-            public const int HTBORDER = 18;
-            public const int HTREDUCE = HTMINBUTTON;
-            public const int HTZOOM = HTMAXBUTTON;
-            public const int HTSIZEFIRST = HTLEFT;
-            public const int HTSIZELAST = HTBOTTOMRIGHT;
-            public const int HTOBJECT = 19;
-            public const int HTCLOSE = 20;
-            public const int HTHELP = 21;
+            public const int Hterror = (-2);
+            public const int Httransparent = (-1);
+            public const int Htnowhere = 0;
+            public const int Htclient = 1;
+            public const int Htcaption = 2;
+            public const int Htsysmenu = 3;
+            public const int Htgrowbox = 4;
+            public const int Htsize = Htgrowbox;
+            public const int Htmenu = 5;
+            public const int Hthscroll = 6;
+            public const int Htvscroll = 7;
+            public const int Htminbutton = 8;
+            public const int Htmaxbutton = 9;
+            public const int Htleft = 10;
+            public const int Htright = 11;
+            public const int Httop = 12;
+            public const int Httopleft = 13;
+            public const int Httopright = 14;
+            public const int Htbottom = 15;
+            public const int Htbottomleft = 16;
+            public const int Htbottomright = 17;
+            public const int Htborder = 18;
+            public const int Htreduce = Htminbutton;
+            public const int Htzoom = Htmaxbutton;
+            public const int Htsizefirst = Htleft;
+            public const int Htsizelast = Htbottomright;
+            public const int Htobject = 19;
+            public const int Htclose = 20;
+            public const int Hthelp = 21;
         #endregion
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            this.DragMove();
+            DragMove();
         }
         protected override void OnSourceInitialized(EventArgs e)
         {
-            HwnDSource = (HwndSource)PresentationSource.FromVisual(this);
-            HwnDSource.AddHook(HwndSourceHook);
+            _hwnDSource = (HwndSource)PresentationSource.FromVisual(this);
+            _hwnDSource.AddHook(HwndSourceHook);
 
             base.OnSourceInitialized(e);
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            HwnDSource.RemoveHook(HwndSourceHook);
+            _hwnDSource.RemoveHook(HwndSourceHook);
 
             base.OnClosed(e);
         }
@@ -78,8 +78,8 @@ namespace ImgUpl0ad.UserInterfaces
                 handled = true;
 
                 // クライアント座標のマウス位置を取得
-                System.Windows.Point ptScreen = new System.Windows.Point(unchecked((short)(long)lParam), unchecked((short)((long)lParam >> 16)));
-                System.Windows.Point ptClient = PointFromScreen(ptScreen);
+                var ptScreen = new Point(unchecked((short)(long)lParam), unchecked((short)((long)lParam >> 16)));
+                var ptClient = PointFromScreen(ptScreen);
 
 
                 // リサイズ可能と判断するサイズ
@@ -89,25 +89,25 @@ namespace ImgUpl0ad.UserInterfaces
 
 
                 // 四隅の斜め方向リサイズが優先
-                if (new Rect(0, 0, bw, bh).Contains(ptClient)) return new IntPtr(HTTOPLEFT);
-                if (new Rect(Width - bw, 0, bw, bh).Contains(ptClient)) return new IntPtr(HTTOPRIGHT);
-                if (new Rect(0, Height - bh, bw, bh).Contains(ptClient)) return new IntPtr(HTBOTTOMLEFT);
-                if (new Rect(Width - bw, Height - bh, bw, bh).Contains(ptClient)) return new IntPtr(HTBOTTOMRIGHT);
+                if (new Rect(0, 0, bw, bh).Contains(ptClient)) return new IntPtr(Httopleft);
+                if (new Rect(Width - bw, 0, bw, bh).Contains(ptClient)) return new IntPtr(Httopright);
+                if (new Rect(0, Height - bh, bw, bh).Contains(ptClient)) return new IntPtr(Htbottomleft);
+                if (new Rect(Width - bw, Height - bh, bw, bh).Contains(ptClient)) return new IntPtr(Htbottomright);
 
 
                 // 四辺の直交方向リサイズ
-                if (new Rect(0, 0, Width, bw).Contains(ptClient)) return new IntPtr(HTTOP);
-                if (new Rect(0, 0, bw, Height).Contains(ptClient)) return new IntPtr(HTLEFT);
-                if (new Rect(Width - bw, 0, bw, Height).Contains(ptClient)) return new IntPtr(HTRIGHT);
-                if (new Rect(0, Height - bh, Width, bh).Contains(ptClient)) return new IntPtr(HTBOTTOM);
+                if (new Rect(0, 0, Width, bw).Contains(ptClient)) return new IntPtr(Httop);
+                if (new Rect(0, 0, bw, Height).Contains(ptClient)) return new IntPtr(Htleft);
+                if (new Rect(Width - bw, 0, bw, Height).Contains(ptClient)) return new IntPtr(Htright);
+                if (new Rect(0, Height - bh, Width, bh).Contains(ptClient)) return new IntPtr(Htbottom);
 
 
                 // ドラッグ移動可能な領域を指定
-                if (new Rect(0, 0, Width, captionH).Contains(ptClient)) return new IntPtr(HTCAPTION);
+                if (new Rect(0, 0, Width, captionH).Contains(ptClient)) return new IntPtr(Htcaption);
 
 
                 // 上記以外はクライアント領域と判断
-                return new IntPtr(HTCLIENT);
+                return new IntPtr(Htclient);
             }
 
             return IntPtr.Zero;
@@ -118,7 +118,7 @@ namespace ImgUpl0ad.UserInterfaces
 
         private void ButtonCapture_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Opacity = 0;
+            Opacity = 0;
 
             var location = GetThisLocation();
             var size = GetThisSize();
@@ -126,8 +126,8 @@ namespace ImgUpl0ad.UserInterfaces
             var capture = new Screencap();
             CapturedImage = capture.Capture(location, size);
 
-            this.Opacity = 1;
-            this.DialogResult = true;
+            Opacity = 1;
+            DialogResult = true;
         }
 
         private void GridCaptureArea_OnSizeChanged(object sender, SizeChangedEventArgs e)
