@@ -22,7 +22,7 @@ namespace ImgUpl0ad
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
             {
-                string[] bunchOfFiles = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+                var bunchOfFiles = (string[])e.Data.GetData(DataFormats.FileDrop, false);
                 if (bunchOfFiles.Length > 1)
                     return null; //No Multiple Files!!!!
 
@@ -107,9 +107,9 @@ namespace ImgUpl0ad
 
     public class ImageBuff
     {
-        public ImageBuff(BitmapImage imageSouce, string detail)
+        public ImageBuff(BitmapImage imageSource, string detail)
         {
-            ImageSouce = imageSouce;
+            ImageSource = imageSource;
             Detail = detail;
         }
 
@@ -117,7 +117,7 @@ namespace ImgUpl0ad
         {
         }
 
-        public BitmapImage ImageSouce { get; set; }
+        public BitmapImage ImageSource { get; set; }
         public string Detail { get; set; }
 
     }

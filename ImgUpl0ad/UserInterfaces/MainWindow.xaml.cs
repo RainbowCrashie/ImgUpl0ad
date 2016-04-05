@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ImgUpl0ad.UserInterfaces;
-using MahApps.Metro.Controls;
 using Microsoft.Win32;
 
-namespace ImgUpl0ad.UserInterface
+namespace ImgUpl0ad.UserInterfaces
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -52,24 +49,24 @@ namespace ImgUpl0ad.UserInterface
 
             var converter = new BitmapSourceToBitmapImageConverter();
             SelectedImage = new ImageBuff(converter.Convert(Clipboard.GetImage()), "Clipboard");
-            MainImage.Source = SelectedImage.ImageSouce;
+            MainImage.Source = SelectedImage.ImageSource;
         }
 
         private void Screencap(object sernder, ExecutedRoutedEventArgs e)
         {
-            this.Hide();
+            Hide();
 
             var captureWindow = new CaptureWindow();
             if (captureWindow.ShowDialog() == false)
             {
-                this.Show();
+                Show();
                 return;
             }
 
             SelectedImage = captureWindow.CapturedImage;
-            MainImage.Source = SelectedImage.ImageSouce;
+            MainImage.Source = SelectedImage.ImageSource;
 
-            this.Show();
+            Show();
         }
 
         private void MainWindow_OnPreviewDragOver(object sender, DragEventArgs e)
@@ -90,15 +87,15 @@ namespace ImgUpl0ad.UserInterface
                 return;
 
             SelectedImage = imgbuff;
-            MainImage.Source = SelectedImage.ImageSouce;
+            MainImage.Source = SelectedImage.ImageSource;
         }
 
         private void StretchWhenLarge()
         {
             if (SelectedImage == null)
                 return;
-            if (MainImage.ActualWidth < SelectedImage.ImageSouce.PixelWidth ||
-                MainImage.ActualHeight < SelectedImage.ImageSouce.PixelHeight)
+            if (MainImage.ActualWidth < SelectedImage.ImageSource.PixelWidth ||
+                MainImage.ActualHeight < SelectedImage.ImageSource.PixelHeight)
             {
                 MainImage.Stretch = Stretch.Uniform;
             }

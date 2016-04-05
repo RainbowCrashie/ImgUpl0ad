@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using MahApps.Metro.Controls;
 
 namespace ImgUpl0ad.UserInterfaces
 {
@@ -11,17 +9,16 @@ namespace ImgUpl0ad.UserInterfaces
     /// </summary>
     public partial class UploadResultWindow
     {
-        private ImageBuff Source { get; }
         public UploadResultWindow(ImageBuff source)
         {
             InitializeComponent();
-            Source = source;
+            Upload(source);
         }
 
-        private async void Upload()
+        private async void Upload(ImageBuff img)
         {
             var imgur = new Imgur();
-            var link = await imgur.UploadAsync(Source.ImageSouce);
+            var link = await imgur.UploadAsync(img.ImageSource);
 
             ProcessingIndicator.IsActive = false;
             labelProgress.Content = "Uploaded Successful";
@@ -34,11 +31,6 @@ namespace ImgUpl0ad.UserInterfaces
         private void ButtonOk_OnClick(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
-        }
-
-        private void UploadResultWindow_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            Upload();
         }
     }
 }
